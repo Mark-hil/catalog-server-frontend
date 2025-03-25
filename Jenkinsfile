@@ -54,9 +54,13 @@ pipeline {
 
         stage('Build Docker Image') {
             steps {
-                script {
-                    sh "docker build -t ${DOCKER_IMAGE}:${DOCKER_TAG} -f ${REACT_APP_DIR}/Dockerfile ."
+                dir("${REACT_APP_DIR}") {
+                    script {
+                        echo 'Building Docker image'
+                        sh "docker build -t ${DOCKER_IMAGE}:${DOCKER_TAG} -f ${REACT_APP_DIR}/Dockerfile ."
+                    }
                 }
+                
             }
         }
 
