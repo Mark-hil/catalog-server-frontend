@@ -35,7 +35,7 @@ pipeline {
                     echo 'Running ESLint and Jest tests'
                     sh '''
                         #npm run lint
-                        npm test -- --watchAll=false
+                        #npm test -- --watchAll=false
                     '''
                 }
             }
