@@ -2,7 +2,6 @@ pipeline {
     agent any
 
     environment {
-        REACT_APP_DIR = 'frontend'
         NODE_VERSION = '18'  // Adjust based on your React app's requirements
         DOCKERHUB_USERNAME = 'markhill97'
         DOCKER_IMAGE = "${DOCKERHUB_USERNAME}/catalog-server-frontend-app"
@@ -20,47 +19,38 @@ pipeline {
 
         stage('Install Dependencies') {
             steps {
-                dir("${REACT_APP_DIR}") {
-                    echo 'Installing npm dependencies'
-                    sh '''
-                        npm install
-                    '''
-                }
+                echo 'Installing npm dependencies'
+                sh '''
+                    npm install
+                '''
             }
         }
 
         stage('Run Linting & Tests') {
             steps {
-                dir("${REACT_APP_DIR}") {
-                    echo 'Running ESLint and Jest tests'
-                    sh '''
-                        #npm run lint
-                        #npm test -- --watchAll=false
-                    '''
-                }
+                echo 'Running ESLint and Jest tests'
+                sh '''
+                    # npm run lint  # Uncomment if you add a lint script
+                    # npm test -- --watchAll=false
+                '''
             }
         }
 
         stage('Build React App') {
             steps {
-                dir("${REACT_APP_DIR}") {
-                    echo 'Building the React application'
-                    sh '''
-                        npm run build
-                    '''
-                }
+                echo 'Building the React application'
+                sh '''
+                    npm run build
+                '''
             }
         }
 
         stage('Build Docker Image') {
             steps {
-                dir("${REACT_APP_DIR}") {
-                    script {
-                        echo 'Building Docker image'
-                        sh "docker build -t ${DOCKER_IMAGE}:${DOCKER_TAG} -f ${REACT_APP_DIR}/Dockerfile ."
-                    }
+                script {
+                    echo 'Building Docker image'
+                    sh "docker build -t ${DOCKER_IMAGE}:${DOCKER_TAG} -f Dockerfile ."
                 }
-                
             }
         }
 
